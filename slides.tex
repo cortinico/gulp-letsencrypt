@@ -1,0 +1,162 @@
+\documentclass[xcolor=svgnames,11pt]{beamer}
+
+\usepackage{graphicx}
+
+\usepackage[italian, english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scale=0.9,sfdefault,light]{roboto}
+
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage{pbox}
+
+\usetheme{Goettingen}
+\definecolor{leorange}{HTML}{FBA100}
+\definecolor{leblue}{HTML}{003A70}
+\definecolor{myblack}{RGB}{14,14,14}
+\definecolor{lelightblue}{HTML}{BFCDDB}
+
+\usecolortheme[named=leblue]{structure}
+\beamertemplatenavigationsymbolsempty
+
+\beamertemplateshadingbackground{white!15}{leorange!5}
+\setbeamertemplate{sidebar canvas right}[vertical shading]%
+[top=lelightblue,bottom=lelightblue]
+
+\mode<presentation>{\usebackgroundtemplate{\includegraphics
+    [height=\paperheight]{img/back_le.png}}}
+
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercolor{block body}{bg=leorange!50}
+\setbeamercolor{block title}{bg=leorange!80}
+
+\setbeamercovered{transparent}
+
+\title{\textbf{Let's encrypt! Certificati SSL per tutti!}}
+\author{Nicola Corti}
+\institute{Gruppo Utenti Linux Pisa \\ \medskip \includegraphics[height=1.5cm]{img/gulp_logo.png}}
+\logo{img/gulp_logo.png}
+\date{02 Febbraio 2016}
+
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\section{Intro}
+
+\begin{frame}{Cosa è Let's encrypt?}
+
+\begin{center}
+\includegraphics[width=5cm]{img/logo_le.png}
+\end{center}
+
+\begin{block}{}
+Let's encrypt è una \textbf{Certification Authority (CA)} che rilascia
+certificati SSL/TLS a titolo \textbf{gratuito}.
+\end{block}
+\pause \medskip
+\begin{itemize}
+  \item Dal 5 Dicembre 2015 si trova in \textbf{Public Beta}.
+  \pause
+  \item Ad oggi ha rilasciato più di \textbf{480 k} certificati.
+  \pause
+  \item Fa dell'\textbf{automazione} il suo punto di forza.
+  \pause
+  \item \underline{https://letsencrypt.org/}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sponsors}
+\begin{center}
+Chi sta supportando il progetto?
+\medskip
+\vspace{0.5cm}
+\includegraphics[width=10cm]{img/sponsors.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{History}
+\begin{description}
+  \item[2012] Iniziato il progetto dentro \textbf{Mozilla}
+  \pause
+  \item[11-2014] Let's Encrypt \textbf{annunciato pubblicamente}
+  \pause
+  \item[01-2015] Protocollo \textbf{ACME} sottoposto all'\textbf{IETF} per essere standardizzato.
+  \pause
+  \item[04-2015] \textbf{ISRG} (Internet Security Research Group) e la \textbf{Linux Foundation}
+  si uniscono al progetto
+  \pause
+  \item[09-2015] Rilasciato il primo certificato per \textbf{helloworld.letsencrypt.org}
+  \pause
+  \item[10-2015] Il certificato intermedio di L.E. diventa \textbf{\emph{cross-signed}} grazie a IdenTrust.
+  (\emph{Let's Encrypt is trusted!})
+  \pause
+  \item[12-2015] \textbf{Public beta!}
+\end{description}
+\end{frame}
+
+\begin{frame}{Why?}
+\begin{itemize}
+  \item \textbf{Free}
+  \item \textbf{Automatico}
+  \item \textbf{Open}
+  \item \textbf{Sicuro}
+  \item \textbf{Trasparente}
+\end{itemize}
+\end{frame}
+
+\section{Server}
+\begin{frame}{Boulder}
+\begin{block}{Architettura}
+Il sistema di Let's Encrypt si basa su \textbf{3 Componenti}: un \textbf{server},
+un \textbf{client} e il \textbf{protocollo} che permette a server e client di comunicare.
+\end{block}
+
+\medskip \pause
+
+Il server si chiama \textbf{Boulder} ed è scritto interamente in \textbf{Go}.
+Si occupa di gestire tutte le procedure per il \textbf{rilascio} e \textbf{revoca} dei certificati.
+\pause
+\begin{center}
+\visible<3>{\includegraphics[width=0.3cm]{img/logo_gh.pdf}}\textbf{ https://github.com/letsencrypt/boulder}
+\end{center}
+\end{frame}
+
+
+
+\section{Client}
+\section{Protocol}
+\section{Certs}
+\section{Setup}
+
+\begin{frame}{}
+\begin{center}
+\begin{Huge}
+{\color{leorange} \textbf{Domande...?}}
+\end{Huge}
+
+\vspace{1.5cm}
+\begin{small}
+Slides realizzate da:\\
+\textbf{Nicola Corti - corti.nico [at] gmail [dot] com}\\
+
+\bigskip
+
+Slides realizzate con \LaTeX\ Beamer.\\
+La seguente presentazione \`e rilasciata sotto licenza\\
+\begin{footnotesize}	\textbf{Creative Commons - Attributions, Non Commercial, Share-alike}.
+\end{footnotesize}
+\\
+\medskip
+\includegraphics[height=0.5cm]{img/cc.png}
+
+\end{small}
+\end{center}
+\end{frame}
+
+\end{document}
