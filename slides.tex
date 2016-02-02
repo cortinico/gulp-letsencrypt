@@ -6,11 +6,12 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[scale=0.9,sfdefault,light]{roboto}
-
 \usepackage{hyperref}
 \usepackage{tabularx}
 \usepackage{url}
 \usepackage{pbox}
+
+\urlstyle{sf}
 
 \usetheme{Goettingen}
 \definecolor{leorange}{HTML}{FBA100}
@@ -121,17 +122,209 @@ un \textbf{client} e il \textbf{protocollo} che permette a server e client di co
 
 Il server si chiama \textbf{Boulder} ed è scritto interamente in \textbf{Go}.
 Si occupa di gestire tutte le procedure per il \textbf{rilascio} e \textbf{revoca} dei certificati.
-\pause
+
+\medskip \pause
+
+Di fatto si tratta di un server HTTP che espone un'interfaccia \textbf{RESTful}
+
+\medskip \pause
+
 \begin{center}
-\visible<3>{\includegraphics[width=0.3cm]{img/logo_gh.pdf}}\textbf{ https://github.com/letsencrypt/boulder}
+\visible<4>{\includegraphics[width=0.3cm]{img/logo_gh.pdf}} \textbf{\url{https://github.com/letsencrypt/boulder}}
 \end{center}
 \end{frame}
 
-
-
 \section{Client}
+
+\begin{frame}{letsencrypt}
+Il client si chiama (semplicemente) \textbf{letsencrypt} ed è scritto interamente in \textbf{Python}.
+Si occupa di farvi interagire con il server remoto e \textbf{gestisce i vostri certificati}.
+\pause
+\begin{itemize}
+  \item Installabile tramite il pacchetto \textbf{letsencrypt} (solo debian \emph{sid/stretch}).
+  \item Installabile tramite \textbf{clone} del repository.
+\end{itemize}
+\pause
+\begin{center}
+\visible<3>{\includegraphics[width=0.3cm]{img/logo_gh.pdf}} \textbf{\url{https://github.com/letsencrypt/letsencrypt}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Plugins}
+Lo scopo principale del client è quello di \textbf{semplificare e automatizzare} tutto il processo di
+autenticazione e di creazione del certificato.
+
+\medskip\pause
+
+Per questo motivo sono stati sviluppati dei plugin per il setup automatico dei certificati ottenuti
+sui principali web browser: \textbf{apache} ed \textbf{nginx}.
+
+\begin{center}
+\includegraphics[height=2cm]{img/apache_logo.png}
+\includegraphics[height=2cm]{img/nginx_logo.png}
+\end{center}
+
+\end{frame}
+
 \section{Protocol}
+
+\begin{frame}{ACME}
+
+\begin{block}{}
+Il protocollo che utilizzano client e server per interagire si chiama \textbf{Automated Certificate Management Environment (ACME)}.
+\end{block}
+
+\medskip \pause
+ACME si base sullo scambio di file \textbf{JSON} firmati (anche detti \textbf{JWS, Json Web Signature}).
+Questi documenti contengono le richieste inviate dal client e le risposte ottenute dal server.
+
+\medskip \pause
+Lo scambio di questi documenti deve avvenire attraverso \textbf{HTTPS}.
+\end{frame}
+
+\begin{frame}{ACME}
+\begin{center}
+\includegraphics[width=9.5cm]{img/acme_spec.png}
+
+\includegraphics[width=0.3cm]{img/logo_gh.pdf} \textbf{ \url{https://github.com/letsencrypt/acme-spec}}
+\end{center}
+\end{frame}
+
+\begin{frame}{ACME}
+Il protocollo ACME ci permette di eseguire tre operazioni:
+\pause\medskip
+\begin{enumerate}
+  \item \textbf{Provare} che noi siamo i responsabili del dominio \emph{example.com}
+  \pause\medskip
+  \item \textbf{Ottenere} un certificato per il dominio \emph{example.com}
+  \pause\medskip
+  \item \textbf{Revocare} o \textbf{rinnovare} un certificato per il dominio \emph{example.com}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{ACME}
+Le interazioni fra client e server sono cifrate tramite una coppia di \textbf{chiavi asimmetriche}
+(una \textbf{privata} ed una \textbf{pubblica}) che viene generata durante il primo avvio del client.
+
+\medskip \pause
+
+\begin{block}{}
+Il server ci permette di \textbf{provare} che siamo gli amministratori del dominio desirato, inviandoci
+una o più \textbf{challenge} che dobbiamo risolvere.
+\end{block}
+
+\medskip \pause
+
+Ogni interazione con il server è inoltre corredata da un \textbf{nonce} che permette di evitare attacchi
+di tipo \textbf{Replay}.
+
+\end{frame}
+
+\begin{frame}[fragile]{Challenges}
+\begin{center}
+
+Il server può, a sua discrezione, inviare una o più challenges.
+\medskip\pause
+
+\begin{tabular}{p{3cm}p{6cm}}
+
+\hline
+\textbf{Tipo} & \textbf{Descrizione} \\
+\hline
+\textcolor{leblue}{\textbf{\small Simple HTTP}} & \textcolor{leblue}{{\small Si chiede di posizionare un \textbf{file} all'interno del
+ proprio webserver contenente un \emph{token} specifico (Accettato sia HTTP che HTTPS).}} \\
+\hline
+\textbf{\small DNS} & {\small Si chiede di inserire un \textbf{record TXT} all'interno del proprio DNS.} \\
+\hline\hline
+\textbf{\scriptsize Proof of possession} & {\scriptsize Si chiede di \textbf{firmare un documento} utilizzando una chiave
+che il server può ricondurre al client.} \\
+\hline
+\textbf{\scriptsize Domain Validation with Server Name Indication} & {\scriptsize Si chiede di \textbf{configurare un server
+TLS} ad uno specifico indirizzo IP (tramite un record A nel DNS).} \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{Domain Validation}
+\begin{center}
+\includegraphics[width=9cm]{img/proto_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Domain Validation}
+\begin{center}
+\includegraphics[width=9cm]{img/proto_2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Certificate Issuance}
+\begin{center}
+\includegraphics[width=9cm]{img/proto_3.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Certificate Revocation}
+\begin{center}
+\includegraphics[width=9cm]{img/proto_4.png}
+\end{center}
+\end{frame}
+
 \section{Certs}
+
+\begin{frame}{DV Certificates}
+\begin{block}{DV}
+I certificati rilasciati sono di tipo \textbf{Domain Validated}. Provano cioè
+che si è effettivamente i proprietari di un determinato dominio.
+\end{block}
+\medskip\pause
+
+Certificati di tipo \textbf{Organization Validation} oppure \textbf{Extended Validation}
+richiederebbero verifiche esplicite del soggetto che fa richiesta del certificato.
+
+\visible<2>{
+\begin{center}
+\includegraphics[width=6cm]{img/dv_example.png}
+
+\includegraphics[width=6cm]{img/ev_example.png}
+\end{center}}
+\end{frame}
+
+\begin{frame}{Cross Signing}
+Tutti i certificati rilasciati sono \emph{Cross-signed} da parte di \textbf{IdenTrust}.
+Questo permette ai certificati di L.E. di essere riconosciuti dalla maggioranza dei browser.
+
+\medskip
+
+\visible<2>{
+\begin{center}
+\includegraphics[width=7cm]{img/cert_error.png}
+\end{center}}
+\end{frame}
+
+\begin{frame}{Cross Signing}
+\begin{center}
+\includegraphics[width=10cm]{img/certs.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Validity}
+I certificati hanno una validità di \textbf{90 giorni} dopo i quali scadono, e non sono
+considerati più validi dai browser.
+
+\medskip\pause
+
+\begin{block}{\emph{90-days validity}}
+Questa non è una novità nel mondo della sicurezza. \textbf{Rinnovare i certificati frequentemente}
+è una buona abitudine e permette di \textbf{limitare i danni} di eventuali certificati compromessi.
+\end{block}
+
+\medskip\pause
+Riceveremo delle mail di \emph{remind} che ci ricordano della scadenza.
+È possibile automatizzare il processo di rinnovo tramite dei task di \textbf{cron}.
+\end{frame}
+
+
 \section{Setup}
 
 \begin{frame}{}
