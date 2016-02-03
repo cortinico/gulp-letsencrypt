@@ -11,11 +11,15 @@
 \usepackage{url}
 \usepackage{pbox}
 
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\insertverticalnavigation}%
+{\ifx\beamer@nav@css\beamer@hidetext{\usebeamertemplate{section in sidebar}}\else{\usebeamertemplate{section in sidebar shaded}}\fi}%
+{{\usebeamertemplate{section in sidebar}}}{}{}
+\makeatother
+
 % TODO
 % - Slide WHY? Needs update
-% - Big title slides before sections
-% - Section name highlight
-% - Social link, last slides + Icon
 % - Check if pause are placed correctly
 % - Notes for CSR and similar (revoke auth., etc.)
 % - Readme file on Gh
@@ -58,6 +62,14 @@
 \end{frame}
 
 \section{Intro}
+\begin{frame}{}
+\begin{center}
+\begin{Huge}
+\textcolor{leorange}{\emph{Introduction}}
+\end{Huge}
+\end{center}
+\end{frame}
+
 
 
 \begin{frame}{Cosa è Let's encrypt?}
@@ -103,7 +115,7 @@ Chi sta supportando il progetto?
   \item[04-2015] \textbf{ISRG} (Internet Security Research Group) e la \textbf{Linux Foundation}
   si uniscono al progetto
   \pause
-  \item[09-2015] Rilasciato il primo certificato per \textbf{helloworld.letsencrypt.org}
+  \item[09-2015] Rilasciato il primo certificato per \textbf{\href{https://helloworld.letsencrypt.org/}{helloworld.letsencrypt.org}}
   \pause
   \item[10-2015] Il certificato intermedio di L.E. diventa \textbf{\emph{cross-signed}} grazie a IdenTrust.
   (\emph{Let's Encrypt is trusted!})
@@ -124,6 +136,16 @@ Chi sta supportando il progetto?
 \end{frame}
 
 \section{Server}
+\begin{frame}{}
+\begin{center}
+\begin{Huge}
+\textcolor{leorange}{\emph{Server}}
+\end{Huge}
+\end{center}
+\end{frame}
+
+
+
 \begin{frame}{Boulder}
 \begin{block}{Architettura}
 Il sistema di Let's Encrypt si basa su \textbf{3 Componenti}: un \textbf{server},
@@ -147,6 +169,15 @@ Di fatto si tratta di un server HTTP che espone un'interfaccia \textbf{RESTful}
 \end{frame}
 
 \section{Client}
+\begin{frame}{}
+\begin{center}
+\begin{Huge}
+\textcolor{leorange}{\emph{Client}}
+\end{Huge}
+\end{center}
+\end{frame}
+
+
 
 \begin{frame}{letsencrypt}
 Il client si chiama (semplicemente) \textbf{letsencrypt} ed è scritto interamente in \textbf{Python}.
@@ -179,6 +210,15 @@ sui principali web browser: \textbf{apache} ed \textbf{nginx}.
 \end{frame}
 
 \section{Protocol}
+\begin{frame}{}
+\begin{center}
+\begin{Huge}
+\textcolor{leorange}{\emph{Protocol}}
+\end{Huge}
+\end{center}
+\end{frame}
+
+
 \begin{frame}{ACME}
 
 \begin{block}{}
@@ -287,6 +327,15 @@ TLS} ad uno specifico indirizzo IP (tramite un record A nel DNS).} \\
 \end{frame}
 
 \section{Certs}
+\begin{frame}{}
+\begin{center}
+\begin{Huge}
+\textcolor{leorange}{\emph{Certificates}}
+\end{Huge}
+\end{center}
+\end{frame}
+
+
 \subsection{DV}
 \begin{frame}{DV Certificates}
 \begin{block}{DV}
@@ -343,6 +392,15 @@ Riceveremo delle mail di \emph{remind} che ci ricordano della scadenza.
 
 
 \section{Setup}
+\begin{frame}{}
+\begin{center}
+\begin{Huge}
+\textcolor{leorange}{\emph{Setup}}
+\end{Huge}
+\end{center}
+\end{frame}
+
+
 \subsection{Requirements}
 \begin{frame}{Requirements}
 Per eseguire il client è necessario:
@@ -616,6 +674,15 @@ di includere letsencrypt dentro \textbf{script}.
 
 
 \section{Conclusions}
+\begin{frame}{}
+\begin{center}
+\begin{Huge}
+\textcolor{leorange}{\emph{Conclusions}}
+\end{Huge}
+\end{center}
+\end{frame}
+
+
 
 \subsection{Drawbacks}
 \begin{frame}{Drawbacks}
@@ -646,8 +713,8 @@ di includere letsencrypt dentro \textbf{script}.
   \item Mailing lists
   \begin{itemize}
     \item Client \textbf{\url{https://groups.google.com/a/letsencrypt.org/forum/\#!forum/client-dev}}
-    \item Server - \textbf{\url{https://groups.google.com/a/letsencrypt.org/forum/\#!forum/ca-dev}}
-    \item ACME (IETF) - \textbf{\url{https://www.ietf.org/mailman/listinfo/acme}}
+    \item Server \textbf{\url{https://groups.google.com/a/letsencrypt.org/forum/\#!forum/ca-dev}}
+    \item ACME (IETF) \textbf{\url{https://www.ietf.org/mailman/listinfo/acme}}
   \end{itemize}
 \end{itemize}
 \end{small}
@@ -660,21 +727,30 @@ di includere letsencrypt dentro \textbf{script}.
 \end{Huge}
 
 \vspace{1.5cm}
-\begin{small}
-Slides realizzate da:\\
-\textbf{Nicola Corti - corti.nico [at] gmail [dot] com}\\
+% Slides realizzate da:\\
+% \textbf{Nicola Corti - corti.nico [at] gmail [dot] com}\\
+
+\begin{center}
+\begin{tabular}{>{\centering\arraybackslash}p{4cm}}
+\includegraphics[height=0.2cm]{img/logo_web.pdf} \textbf{\href{https://ncorti.com}{ ncorti.com}} \\
+ \\
+\includegraphics[height=0.2cm]{img/logo_twitter.pdf} \textbf{\href{https://twitter.com/cortinico}{ @cortinico}} \\
+ \\
+\includegraphics[height=0.2cm]{img/logo_gh.pdf} \textbf{\href{https://github.com/cortinico}{ @cortinico}} \\ \\
+\end{tabular}
+\end{center}
 
 \bigskip
 
+\begin{footnotesize}
 Slides realizzate con \LaTeX\ Beamer.\\
 La seguente presentazione \`e rilasciata sotto licenza\\
-\begin{footnotesize}	\textbf{Creative Commons - Attributions, Non Commercial, Share-alike}.
+\textbf{Creative Commons - Attributions, Non Commercial, Share-alike}.
 \end{footnotesize}
 \\
 \medskip
 \includegraphics[height=0.5cm]{img/cc.png}
 
-\end{small}
 \end{center}
 \end{frame}
 
