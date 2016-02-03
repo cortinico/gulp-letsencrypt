@@ -11,6 +11,15 @@
 \usepackage{url}
 \usepackage{pbox}
 
+% TODO
+% - Slide WHY? Needs update
+% - Big title slides before sections
+% - Section name highlight
+% - Social link, last slides + Icon
+% - Check if pause are placed correctly
+% - Notes for CSR and similar (revoke auth., etc.)
+% - Readme file on Gh
+
 \urlstyle{sf}
 
 \usetheme{Goettingen}
@@ -50,8 +59,8 @@
 
 \section{Intro}
 
-\begin{frame}{Cosa è Let's encrypt?}
 
+\begin{frame}{Cosa è Let's encrypt?}
 \begin{center}
 \includegraphics[width=5cm]{img/logo_le.png}
 \end{center}
@@ -68,10 +77,11 @@ certificati SSL/TLS a titolo \textbf{gratuito}.
   \pause
   \item Fa dell'\textbf{automazione} il suo punto di forza.
   \pause
-  \item \underline{https://letsencrypt.org/}
+  \item \textbf{\url{https://letsencrypt.org/}}
 \end{itemize}
 \end{frame}
 
+\subsection{Sponsors}
 \begin{frame}{Sponsors}
 \begin{center}
 Chi sta supportando il progetto?
@@ -81,6 +91,7 @@ Chi sta supportando il progetto?
 \end{center}
 \end{frame}
 
+\subsection{History}
 \begin{frame}{History}
 \begin{description}
   \item[2012] Iniziato il progetto dentro \textbf{Mozilla}
@@ -101,6 +112,7 @@ Chi sta supportando il progetto?
 \end{description}
 \end{frame}
 
+\subsection{Why?}
 \begin{frame}{Why?}
 \begin{itemize}
   \item \textbf{Free}
@@ -167,7 +179,6 @@ sui principali web browser: \textbf{apache} ed \textbf{nginx}.
 \end{frame}
 
 \section{Protocol}
-
 \begin{frame}{ACME}
 
 \begin{block}{}
@@ -190,6 +201,7 @@ Lo scambio di questi documenti deve avvenire attraverso \textbf{HTTPS}.
 \end{center}
 \end{frame}
 
+
 \begin{frame}{ACME}
 Il protocollo ACME ci permette di eseguire tre operazioni:
 \pause\medskip
@@ -202,7 +214,8 @@ Il protocollo ACME ci permette di eseguire tre operazioni:
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{ACME}
+\subsection{Security}
+\begin{frame}{Security}
 Le interazioni fra client e server sono cifrate tramite una coppia di \textbf{chiavi asimmetriche}
 (una \textbf{privata} ed una \textbf{pubblica}) che viene generata durante il primo avvio del client.
 
@@ -220,6 +233,7 @@ di tipo \textbf{Replay}.
 
 \end{frame}
 
+\subsection{Challenges}
 \begin{frame}[fragile]{Challenges}
 \begin{center}
 
@@ -246,6 +260,7 @@ TLS} ad uno specifico indirizzo IP (tramite un record A nel DNS).} \\
 \end{center}
 \end{frame}
 
+\subsection{The protocol}
 \begin{frame}{Domain Validation}
 \begin{center}
 \includegraphics[width=9cm]{img/proto_1.png}
@@ -264,6 +279,7 @@ TLS} ad uno specifico indirizzo IP (tramite un record A nel DNS).} \\
 \end{center}
 \end{frame}
 
+\subsection{Cert revocation}
 \begin{frame}{Certificate Revocation}
 \begin{center}
 \includegraphics[width=9cm]{img/proto_4.png}
@@ -271,7 +287,7 @@ TLS} ad uno specifico indirizzo IP (tramite un record A nel DNS).} \\
 \end{frame}
 
 \section{Certs}
-
+\subsection{DV}
 \begin{frame}{DV Certificates}
 \begin{block}{DV}
 I certificati rilasciati sono di tipo \textbf{Domain Validated}. Provano cioè
@@ -290,6 +306,7 @@ richiederebbero verifiche esplicite del soggetto che fa richiesta del certificat
 \end{center}}
 \end{frame}
 
+\subsection{Cross Signing}
 \begin{frame}{Cross Signing}
 Tutti i certificati rilasciati sono \emph{Cross-signed} da parte di \textbf{IdenTrust}.
 Questo permette ai certificati di L.E. di essere riconosciuti dalla maggioranza dei browser.
@@ -326,7 +343,7 @@ Riceveremo delle mail di \emph{remind} che ci ricordano della scadenza.
 
 
 \section{Setup}
-
+\subsection{Requirements}
 \begin{frame}{Requirements}
 Per eseguire il client è necessario:
 \begin{itemize}
@@ -342,6 +359,7 @@ sistemi Debian based: \textbf{Ubuntu 12.04+} e \textbf{Debian 7+}
 \end{itemize}
 \end{frame}
 
+\subsection{Download}
 \begin{frame}[fragile]{Download}
 Per prima cosa è necessario scaricare il client \textbf{letsencrypt}.
 
@@ -375,6 +393,7 @@ si scelga di clonare il repository.
 
 \end{frame}
 
+\subsection{Run}
 \begin{frame}[fragile]{Run}
 Eseguire il client è molto semplice. È sufficiente invocare il comando:
 \begin{block}{}
@@ -420,6 +439,7 @@ $ ./letsencrypt-auto --email admin@example.com --agree-tos
 \end{block}
 \end{frame}
 
+\subsection{Plugins}
 \begin{frame}{Plugins}
 \begin{center}
 \begin{tabular}{p{2cm}p{0.5cm}p{0.5cm}p{5cm}}
@@ -435,6 +455,7 @@ Nginx & Y & Y & {\scriptsize Richiede ed installa automaticamente i certificati 
 \end{tabular}
 \end{center}
 \end{frame}
+
 
 \begin{frame}[fragile]{certonly}
 È possibile utilizzare i plugin con il supporto per l'\emph{authentication} (Y nella colonna A)
@@ -485,6 +506,7 @@ I file che andremo a trovare sono:
 \end{description}
 \end{frame}
 
+\subsection{Revoke}
 \begin{frame}[fragile]{Revoke}
 Per revocare un certificato è sufficiente invocare l'opzione \textbf{revoke}.
 
@@ -497,6 +519,7 @@ $ /.letsencrypt-auto revoke --cert-path example-cert.pem
 \end{scriptsize}
 \end{frame}
 
+\subsection{Renewal}
 \begin{frame}[fragile]{Renewal}
 L'operazione di rinnovo è molto semplice, e può essere effettuata semplicemente
 invocando il comando \textbf{letsencrypt}, senza parametri.
@@ -513,6 +536,7 @@ automatico dei certificati prima dei 90 giorni.
 
 \end{frame}
 
+\subsection{Update}
 \begin{frame}[fragile]{Update}
 È importante tenere il client aggiornato, in quanto si tratta di una beta pubblica.
 
@@ -558,15 +582,75 @@ di includere letsencrypt dentro \textbf{script}.
 
 \end{frame}
 
-\begin{frame}{Screenshots}
+\subsection{Screens}
+\begin{frame}{Screens}
+\begin{center}
+\includegraphics[width=9cm]{img/screen1.png}
+\end{center}
 \end{frame}
+\begin{frame}{Screens}
+\begin{center}
+\includegraphics[width=9cm]{img/screen2.png}
+\end{center}
+\end{frame}
+\begin{frame}{Screens}
+\begin{center}
+\includegraphics[width=9cm]{img/screen3.png}
+\end{center}
+\end{frame}
+\begin{frame}{Screens}
+\begin{center}
+\includegraphics[width=9cm]{img/screen4.png}
+\end{center}
+\end{frame}
+\begin{frame}{Screens}
+\begin{center}
+\includegraphics[width=9cm]{img/screen5.png}
+\end{center}
+\end{frame}
+\begin{frame}{Screens}
+\begin{center}
+\includegraphics[width=9cm]{img/screen6.png}
+\end{center}
+\end{frame}
+
 
 \section{Conclusions}
 
+\subsection{Drawbacks}
 \begin{frame}{Drawbacks}
+\begin{itemize}
+  \item Nessun supporto per \textbf{Organization Validation} o \textbf{Extended
+  Validation}, troppo complessi da automatizzare.
+  \medskip\pause
+  \item Nessun supporto per le \textbf{wildcards} (*.example.com), forse in futuro.
+  \medskip\pause
+  \item Challenges solo tramite HTTP (public beta), supporto DNS ancora assente.
+\end{itemize}
 \end{frame}
 
+\subsection{Resources}
 \begin{frame}{Resources}
+\begin{small}
+\begin{itemize}
+  \item How it works \textbf{\url{https://letsencrypt.org/howitworks/}}
+  \medskip
+  \item Tech details \textbf{\url{https://letsencrypt.org/howitworks/technology/}}
+  \medskip
+  \item Read the docs \textbf{\url{https://letsencrypt.readthedocs.org/}}
+  \medskip
+  \item Community board \textbf{\url{https://community.letsencrypt.org/}}
+  \medskip
+  \item Code \textbf{\url{https://github.com/letsencrypt/}}
+  \medskip
+  \item Mailing lists
+  \begin{itemize}
+    \item Client \textbf{\url{https://groups.google.com/a/letsencrypt.org/forum/\#!forum/client-dev}}
+    \item Server - \textbf{\url{https://groups.google.com/a/letsencrypt.org/forum/\#!forum/ca-dev}}
+    \item ACME (IETF) - \textbf{\url{https://www.ietf.org/mailman/listinfo/acme}}
+  \end{itemize}
+\end{itemize}
+\end{small}
 \end{frame}
 
 \begin{frame}{}
