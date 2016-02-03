@@ -39,7 +39,7 @@
 \author{Nicola Corti}
 \institute{Gruppo Utenti Linux Pisa \\ \medskip \includegraphics[height=1.5cm]{img/gulp_logo.png}}
 \logo{img/gulp_logo.png}
-\date{02 Febbraio 2016}
+\date{03 Febbraio 2016}
 
 
 \begin{document}
@@ -326,6 +326,248 @@ Riceveremo delle mail di \emph{remind} che ci ricordano della scadenza.
 
 
 \section{Setup}
+
+\begin{frame}{Requirements}
+Per eseguire il client è necessario:
+\begin{itemize}
+  \item Essere su un sistema \textbf{Unix like}.
+  \item Avere \textbf{Python 2.6} o \textbf{2.7}.
+  \item Avere accesso di \textbf{root} sul proprio sistema.
+
+\medskip\pause
+
+Inoltre, il plugin di autoconfigurazione di \textbf{apache}, funziona solamente con
+sistemi Debian based: \textbf{Ubuntu 12.04+} e \textbf{Debian 7+}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Download}
+Per prima cosa è necessario scaricare il client \textbf{letsencrypt}.
+
+\medskip\pause
+Per Debian \emph{sid/stretch}:
+\begin{block}{}
+\begin{scriptsize}
+\begin{verbatim}
+$ sudo apt-get install letsencrypt
+$ letsencrypt --help
+\end{verbatim}
+\end{scriptsize}
+\end{block}
+
+\medskip\pause
+Per tutti gli altri:
+\begin{block}{}
+\begin{scriptsize}
+\begin{verbatim}
+$ git clone https://github.com/letsencrypt/letsencrypt
+$ cd letsencrypt
+$ ./letsencrypt-auto --help
+\end{verbatim}
+\end{scriptsize}
+\end{block}
+
+\medskip\pause
+
+Da ora in poi ci riferiremo ai comandi con \textbf{letsencrypt-auto} assumendo che
+si scelga di clonare il repository.
+
+\end{frame}
+
+\begin{frame}[fragile]{Run}
+Eseguire il client è molto semplice. È sufficiente invocare il comando:
+\begin{block}{}
+\begin{scriptsize}
+\begin{verbatim}
+$ ./letsencrypt-auto
+\end{verbatim}
+\end{scriptsize}
+\end{block}
+E verremo guidati durante il processo di issuing dei certificati.
+\end{frame}
+
+\begin{frame}[fragile]{Apache}
+Se si vuole configurare \textbf{Apache} per utilizzare i certificati che vengono
+generati, è possibile utilizzare il comando
+\begin{block}{}
+\begin{scriptsize}
+\begin{verbatim}
+$ ./letsencrypt-auto --apache -d example.com -d www.example.com
+\end{verbatim}
+\end{scriptsize}
+\end{block}
+Indicando con \textbf{-{}-apache} che si vuole configurare Apache e con \textbf{-d}
+i vari domini per cui si sta richiedendo un certificato.
+\end{frame}
+
+\begin{frame}[fragile]{Contacts}
+Durante la prima interazione ci verrà chiesta la nostra \textbf{email} per i contatti
+e ci verrà chiesto di accettare i \textbf{Terms of service}.
+
+\medskip\pause
+
+È possibile saltare questi passaggi tramite i seguenti flag
+
+\medskip
+
+\begin{block}{}
+\begin{scriptsize}
+\begin{verbatim}
+$ ./letsencrypt-auto --email admin@example.com --agree-tos
+\end{verbatim}
+\end{scriptsize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Plugins}
+\begin{center}
+\begin{tabular}{p{2cm}p{0.5cm}p{0.5cm}p{5cm}}
+\hline
+\textbf{Plugin} & \textbf{A} & \textbf{I} & \textbf{Descrizione}\\
+\hline
+Apache & Y & Y & {\scriptsize Richiede ed installa automaticamente i certificati su Apache 2.4 (Debian based)} \\
+Standalone & Y & N & {\scriptsize Avvia un webserver \emph{standalone} sulla porta 80/443} \\
+Standalone & Y & N & {\scriptsize Ottiene il certificato andando a scrivere all'interno della \emph{root} di web server già attivo}\\
+Manual & Y & N & {\scriptsize Fornisce i comandi da eseguire per ottenere un certificato su un'altro web server} \\
+Nginx & Y & Y & {\scriptsize Richiede ed installa automaticamente i certificati su Nginx (sperimentale)} \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{certonly}
+È possibile utilizzare i plugin con il supporto per l'\emph{authentication} (Y nella colonna A)
+per ottenere \textbf{solamente i certificati} senza effettuare l'installazione degli stessi.
+
+\medskip\pause
+
+È sufficiente indicare l'opzione \textbf{certonly} nella linea di comando.
+
+\medskip
+
+\begin{block}{Standalone example}
+
+Ad esempio tramite il comando
+\begin{scriptsize}
+\begin{verbatim}
+$ ./letsencrypt-auto --standalone-supported-challenges \
+ http-01 certonly -d example.com
+\end{verbatim}
+\end{scriptsize}
+
+Si avvia un server standalone sulla porta 80 e si otterrà il certificato per il dominio example.com
+\end{block}
+\end{frame}
+
+\begin{frame}{/etc/letsencrypt}
+Il client andrà a salvare i certificati e le chiavi dentro la cartella \textbf{/etc/letsencrypt}.
+
+\medskip\pause
+{
+\setbeamercolor{block body}{bg=red!50}
+\begin{block}{}
+Dentro questa cartella andranno a finire sia i \textbf{certificati} che le \textbf{chiavi pubbliche/private}.
+È quindi \textbf{FONDAMENTALE} fare un backup della cartella e mantenerla in un \textbf{luogo sicuro}.
+\end{block}
+}
+I certificati si troveranno dentro la cartella \textbf{/etc/letsencrypt/live/example.com/}, sono link
+simbolici che verranno aggiornati ad ogni rinnovo dei certificati.
+\end{frame}
+
+\begin{frame}{/etc/letsencrypt}
+I file che andremo a trovare sono:
+\begin{description}
+  \item[\textbf{privkey.pem}] Chiave privata del certificato. Da non condividere MAI!
+  \item[\textbf{cert.pem}] Certificato del server (quello che viene inviato al client).
+  \item[\textbf{chain.pem}] Elenco dei certificati intermedi delle C.A. collegati al certificato.
+  \item[\textbf{fullchain.pem}] Elenco dei certificati intermedi delle C.A. collegati al certificato, più il certificato stesso.
+\end{description}
+\end{frame}
+
+\begin{frame}[fragile]{Revoke}
+Per revocare un certificato è sufficiente invocare l'opzione \textbf{revoke}.
+
+\medskip\pause
+
+\begin{scriptsize}
+\begin{verbatim}
+$ /.letsencrypt-auto revoke --cert-path example-cert.pem
+\end{verbatim}
+\end{scriptsize}
+\end{frame}
+
+\begin{frame}[fragile]{Renewal}
+L'operazione di rinnovo è molto semplice, e può essere effettuata semplicemente
+invocando il comando \textbf{letsencrypt}, senza parametri.
+
+\medskip\pause
+
+È inoltre possibile impostare flag quali \textbf{-{}-renew-by-default} per effettuare
+il rinnovo senza nessuna interazione da parte dell'utente.
+
+\medskip\pause
+
+In questo modo è possibile schedulare un task su \textbf{cron} per il rinnovo
+automatico dei certificati prima dei 90 giorni.
+
+\end{frame}
+
+\begin{frame}[fragile]{Update}
+È importante tenere il client aggiornato, in quanto si tratta di una beta pubblica.
+
+
+\medskip\pause
+Per Debian \emph{sid/stretch}:
+\begin{block}{}
+\begin{scriptsize}
+\begin{verbatim}
+$ sudo apt-get update && sudo apt-get upgrade
+\end{verbatim}
+\end{scriptsize}
+\end{block}
+
+\medskip\pause
+Per tutti gli altri:
+\begin{block}{}
+\begin{scriptsize}
+\begin{verbatim}
+$ cd letsencrypt
+$ git pull
+\end{verbatim}
+\end{scriptsize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{General usage}
+Nella stragrande maggioranza dei casi, sarà sufficiente invocare il comando
+\textbf{letsencrypt} e farsi guidare dall'interfaccia grafica da terminale.
+
+\medskip\pause
+
+Let's Encrypt ci guiderà durante tutti i processi di generazione/rinnovo
+di ogni certificato. Sarà sufficiente rispondere alle domande che ci vengono
+chieste.
+
+\medskip\pause
+
+\textbf{Troppi parametri} da ricordare renderebbero poco snello il processo automatico
+di letsencrypt, ma al tempo stesso permettono molta \textbf{flessibilità} e permettono
+di includere letsencrypt dentro \textbf{script}.
+
+\end{frame}
+
+\begin{frame}{Screenshots}
+\end{frame}
+
+\section{Conclusions}
+
+\begin{frame}{Drawbacks}
+\end{frame}
+
+\begin{frame}{Resources}
+\end{frame}
 
 \begin{frame}{}
 \begin{center}
