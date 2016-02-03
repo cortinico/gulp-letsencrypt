@@ -20,9 +20,6 @@
 
 % TODO
 % - Slide WHY? Needs update
-% - Check if pause are placed correctly
-% - Notes for CSR and similar (revoke auth., etc.)
-% - Readme file on Gh
 
 \urlstyle{sf}
 
@@ -110,7 +107,7 @@ Chi sta supportando il progetto?
   \pause
   \item[11-2014] Let's Encrypt \textbf{annunciato pubblicamente}
   \pause
-  \item[01-2015] Protocollo \textbf{ACME} sottoposto all'\textbf{IETF} per essere standardizzato.
+  \item[01-2015] Protocollo \textbf{ACME} sottoposto all'\textbf{IETF} per essere standardizzato
   \pause
   \item[04-2015] \textbf{ISRG} (Internet Security Research Group) e la \textbf{Linux Foundation}
   si uniscono al progetto
@@ -128,9 +125,13 @@ Chi sta supportando il progetto?
 \begin{frame}{Why?}
 \begin{itemize}
   \item \textbf{Free}
+  \medskip\pause
   \item \textbf{Automatico}
+  \medskip\pause
   \item \textbf{Open}
+  \medskip\pause
   \item \textbf{Sicuro}
+  \medskip\pause
   \item \textbf{Trasparente}
 \end{itemize}
 \end{frame}
@@ -202,10 +203,11 @@ autenticazione e di creazione del certificato.
 Per questo motivo sono stati sviluppati dei plugin per il setup automatico dei certificati ottenuti
 sui principali web browser: \textbf{apache} ed \textbf{nginx}.
 
+\visible<2>{
 \begin{center}
 \includegraphics[height=2cm]{img/apache_logo.png}
 \includegraphics[height=2cm]{img/nginx_logo.png}
-\end{center}
+\end{center}}
 
 \end{frame}
 
@@ -230,7 +232,7 @@ ACME si base sullo scambio di file \textbf{JSON} firmati (anche detti \textbf{JW
 Questi documenti contengono le richieste inviate dal client e le risposte ottenute dal server.
 
 \medskip \pause
-Lo scambio di questi documenti deve avvenire attraverso \textbf{HTTPS}.
+Lo scambio di questi documenti deve avvenire necessariamente attraverso \textbf{HTTPS}.
 \end{frame}
 
 \begin{frame}{ACME}
@@ -250,7 +252,7 @@ Il protocollo ACME ci permette di eseguire tre operazioni:
   \pause\medskip
   \item \textbf{Ottenere} un certificato per il dominio \emph{example.com}
   \pause\medskip
-  \item \textbf{Revocare} o \textbf{rinnovare} un certificato per il dominio \emph{example.com}
+  \item \textbf{Revocare} o \textbf{Rinnovare} un certificato per il dominio \emph{example.com}
 \end{enumerate}
 \end{frame}
 
@@ -360,7 +362,9 @@ richiederebbero verifiche esplicite del soggetto che fa richiesta del certificat
 Tutti i certificati rilasciati sono \emph{Cross-signed} da parte di \textbf{IdenTrust}.
 Questo permette ai certificati di L.E. di essere riconosciuti dalla maggioranza dei browser.
 
-\medskip
+\medskip\pause
+
+In questo modo possiamo evitare errori quali:
 
 \visible<2>{
 \begin{center}
@@ -408,13 +412,12 @@ Per eseguire il client è necessario:
   \item Essere su un sistema \textbf{Unix like}.
   \item Avere \textbf{Python 2.6} o \textbf{2.7}.
   \item Avere accesso di \textbf{root} sul proprio sistema.
+\end{itemize}
 
 \medskip\pause
 
 Inoltre, il plugin di autoconfigurazione di \textbf{apache}, funziona solamente con
-sistemi Debian based: \textbf{Ubuntu 12.04+} e \textbf{Debian 7+}
-
-\end{itemize}
+OS Debian based: \textbf{Ubuntu 12.04+} e \textbf{Debian 7+}
 \end{frame}
 
 \subsection{Download}
@@ -550,6 +553,7 @@ Dentro questa cartella andranno a finire sia i \textbf{certificati} che le \text
 È quindi \textbf{FONDAMENTALE} fare un backup della cartella e mantenerla in un \textbf{luogo sicuro}.
 \end{block}
 }
+\medskip\pause
 I certificati si troveranno dentro la cartella \textbf{/etc/letsencrypt/live/example.com/}, sono link
 simbolici che verranno aggiornati ad ogni rinnovo dei certificati.
 \end{frame}
@@ -557,10 +561,10 @@ simbolici che verranno aggiornati ad ogni rinnovo dei certificati.
 \begin{frame}{/etc/letsencrypt}
 I file che andremo a trovare sono:
 \begin{description}
-  \item[\textbf{privkey.pem}] Chiave privata del certificato. Da non condividere MAI!
-  \item[\textbf{cert.pem}] Certificato del server (quello che viene inviato al client).
-  \item[\textbf{chain.pem}] Elenco dei certificati intermedi delle C.A. collegati al certificato.
-  \item[\textbf{fullchain.pem}] Elenco dei certificati intermedi delle C.A. collegati al certificato, più il certificato stesso.
+  \item[\textbf{\small privkey.pem}] Chiave privata del certificato. Da non condividere MAI!
+  \item[\textbf{\small cert.pem}] Certificato del server (quello che viene inviato al client).
+  \item[\textbf{\small chain.pem}] Elenco dei certificati intermedi delle C.A. collegati al certificato.
+  \item[\textbf{\small fullchain.pem}] Elenco dei certificati intermedi delle C.A. collegati al certificato, più il certificato stesso.
 \end{description}
 \end{frame}
 
@@ -570,11 +574,13 @@ Per revocare un certificato è sufficiente invocare l'opzione \textbf{revoke}.
 
 \medskip\pause
 
+\begin{block}{}
 \begin{scriptsize}
 \begin{verbatim}
 $ /.letsencrypt-auto revoke --cert-path example-cert.pem
 \end{verbatim}
 \end{scriptsize}
+\end{block}
 \end{frame}
 
 \subsection{Renewal}
@@ -604,7 +610,7 @@ Per Debian \emph{sid/stretch}:
 \begin{block}{}
 \begin{scriptsize}
 \begin{verbatim}
-$ sudo apt-get update && sudo apt-get upgrade
+$ apt-get update && apt-get upgrade
 \end{verbatim}
 \end{scriptsize}
 \end{block}
@@ -628,7 +634,7 @@ Nella stragrande maggioranza dei casi, sarà sufficiente invocare il comando
 
 \medskip\pause
 
-Let's Encrypt ci guiderà durante tutti i processi di generazione/rinnovo
+Let's Encrypt ci seguirà durante tutti i processi di generazione/rinnovo
 di ogni certificato. Sarà sufficiente rispondere alle domande che ci vengono
 chieste.
 
@@ -669,6 +675,16 @@ di includere letsencrypt dentro \textbf{script}.
 \begin{frame}{Screens}
 \begin{center}
 \includegraphics[width=9cm]{img/screen6.png}
+\end{center}
+\end{frame}
+\begin{frame}{Screens}
+\begin{center}
+\includegraphics[width=9cm]{img/screen7.png}
+\end{center}
+\end{frame}
+\begin{frame}{Screens}
+\begin{center}
+\includegraphics[width=9cm]{img/screen8.png}
 \end{center}
 \end{frame}
 
@@ -733,10 +749,8 @@ di includere letsencrypt dentro \textbf{script}.
 \begin{center}
 \begin{tabular}{>{\centering\arraybackslash}p{4cm}}
 \includegraphics[height=0.2cm]{img/logo_web.pdf} \textbf{\href{https://ncorti.com}{ ncorti.com}} \\
- \\
 \includegraphics[height=0.2cm]{img/logo_twitter.pdf} \textbf{\href{https://twitter.com/cortinico}{ @cortinico}} \\
- \\
-\includegraphics[height=0.2cm]{img/logo_gh.pdf} \textbf{\href{https://github.com/cortinico}{ @cortinico}} \\ \\
+\includegraphics[height=0.2cm]{img/logo_gh.pdf} \textbf{\href{https://github.com/cortinico}{ @cortinico}} \\
 \end{tabular}
 \end{center}
 
