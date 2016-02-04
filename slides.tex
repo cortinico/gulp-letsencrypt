@@ -18,9 +18,6 @@
 {{\usebeamertemplate{section in sidebar}}}{}{}
 \makeatother
 
-% TODO
-% - Slide WHY? Needs update
-
 \urlstyle{sf}
 
 \usetheme{Goettingen}
@@ -509,7 +506,7 @@ $ ./letsencrypt-auto --email admin@example.com --agree-tos
 \hline
 Apache & Y & Y & {\scriptsize Richiede ed installa automaticamente i certificati su Apache 2.4 (Debian based)} \\
 Standalone & Y & N & {\scriptsize Avvia un webserver \emph{standalone} sulla porta 80/443} \\
-Standalone & Y & N & {\scriptsize Ottiene il certificato andando a scrivere all'interno della \emph{root} di web server già attivo}\\
+Webroot & Y & N & {\scriptsize Ottiene il certificato andando a scrivere all'interno della \emph{root} di web server già attivo}\\
 Manual & Y & N & {\scriptsize Fornisce i comandi da eseguire per ottenere un certificato su un'altro web server} \\
 Nginx & Y & Y & {\scriptsize Richiede ed installa automaticamente i certificati su Nginx (sperimentale)} \\
 \hline
